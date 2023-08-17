@@ -6,7 +6,10 @@ class AI_prompt:
     def __init__(self) -> None:
         openai.api_key = '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'
 
-    def write_rap_battle(self, person1, person2):
+    def write_rap_battle(self, person1, person2) -> str:
+        """
+        Returns a rap battle between person1 and person1
+        """
         messages = [{"role": "system", "content": 
                       "You are a rap battle writer."},
                      {"role": "user", "content":
