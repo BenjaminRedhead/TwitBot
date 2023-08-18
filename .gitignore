@@ -1,3 +1,4 @@
 envs/
 scripts/KEYS.py
 scripts/__pycache__
+.vscode/
