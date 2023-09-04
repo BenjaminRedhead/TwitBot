@@ -1,7 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
+from posting import Twitter
 
-#TODO: refactor code into a class
+#TODO: Attach an SQL database to this to record historical news
 
 class Webscraper:
     def __init__(self) -> None:
@@ -11,6 +12,9 @@ class Webscraper:
         pass
 
 class BBC_scraper:
+    """
+    A class containing the latest headlines from the BBC news website at the point of initialisation.
+    """
     def __init__(self) -> None:
         self.headlines = self.scrape_bbc_headlines()
     
@@ -18,7 +22,7 @@ class BBC_scraper:
         return self.scrape_bbc_article(self.headlines(key))
     
     def get_headlines(self):
-        return self.headlines.keys()
+        return list(self.headlines.keys())
 
 
     def scrape_bbc_headlines(self):
@@ -39,7 +43,10 @@ class BBC_scraper:
                 headlines_dict[headline.text] = a["href"]
         return headlines_dict
 
-    def scrape_bbc_article(url):
+    def scrape_bbc_article(self, url):
+        """
+        Takes a URL to a bbc news article as an argument and returns the article text.
+        """
         page = requests.get(url)
         soup = BeautifulSoup(page.content, "html.parser")
         paragraphs = soup.find_all("p", class_="ssrcss-1q0x1qg-Paragraph e1jhz7w10")
@@ -48,16 +55,11 @@ class BBC_scraper:
             article_text += p.text + "\n"
         return article_text
 
+scraper = BBC_scraper()
+latest_headline = scraper.get_headlines()[0]
 
-"""
-headlines = scrape_bbc_headlines()
-for i in headlines:
-    print(f"{i}: {headlines[i]}")
-"""
-
-
-
-
+bot = Twitter()
+bot.post(latest_headline)
 
 
 
